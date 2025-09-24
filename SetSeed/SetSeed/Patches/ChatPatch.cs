@@ -1,6 +1,7 @@
 ﻿using Expedition;
 using GameData;
 using HarmonyLib;
+using Player;
 using SNetwork;
 using System;
 using System.Collections.Generic;
@@ -27,13 +28,7 @@ internal class ChatPatch
 
             if (words.Length > 1 && int.TryParse(words[1], out int seed))
             {
-                Data.session_seed = seed;
-                
-                if (RundownManager.Current != null)
-                {
-                    RundownManager.Current.m_activeExpedition.SessionSeed = seed;
-                    Plugin.L.LogMessage($"Current Seeds ->> SessionSeed: {seed}");
-                }
+                ChangeSeed(seed);
 
                 return SkipOG("SessionSeed", seed);
             }
@@ -42,13 +37,7 @@ internal class ChatPatch
 
             if (clipboardText != null && int.TryParse(clipboardText, out int clipboard_seed))
             {
-                Data.session_seed = clipboard_seed;
-
-                if (RundownManager.Current != null)
-                {
-                    RundownManager.Current.m_activeExpedition.SessionSeed = clipboard_seed;
-                    Plugin.L.LogMessage($"Current Seeds ->> SessionSeed: {clipboard_seed}");
-                }
+                ChangeSeed(clipboard_seed);
 
                 return SkipOG("SessionSeed", clipboard_seed);
             }
@@ -63,5 +52,17 @@ internal class ChatPatch
     {
         PlayerChatManager.Current.m_currentValue = $"<color=orange>{name} set to {value}";
         return true;
+    }
+
+    private static void ChangeSeed(int seed)
+    {
+        Data.session_seed = seed;
+        if (RundownManager.Current != null && SNet.IsMaster)
+        {
+            Data.last_act_exp_data.sessionSeed = seed;
+            RundownManager.Current.m_activeExpedition.SessionSeed = seed;
+            RundownManager.Current.SetActiveExpedition(Data.last_act_exp_data, RundownManager.Current.m_activeExpedition);
+            Plugin.L.LogWarning($"Other players warned about seed change {RundownManager.Current.m_activeExpedition.SessionSeed}.");
+        }
     }
 }

@@ -10,4 +10,6 @@ internal class Data
 {
     public static int session_seed { get; set; }
 
+    public static pActiveExpedition last_act_exp_data { get; set; }
+
 }

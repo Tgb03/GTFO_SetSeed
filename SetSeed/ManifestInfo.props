@@ -2,8 +2,8 @@
     <PropertyGroup>
         <TSName>SetSeed</TSName>
         <TSAuthor>tgb03</TSAuthor>
-        <TSVersion>1.0.0</TSVersion> <!-- TSVersion empty = GitInfo used instead (if available; check nuget) -->
-        <TSWebsite>t</TSWebsite>
+        <TSVersion>1.0.1</TSVersion> <!-- TSVersion empty = GitInfo used instead (if available; check nuget) -->
+        <TSWebsite>https://github.com/Tgb03/GTFO_SetSeed</TSWebsite>
         <TSDescription>Allows you to set the SessionSeed in game using chat commands.</TSDescription>
     </PropertyGroup>
     <ItemGroup>

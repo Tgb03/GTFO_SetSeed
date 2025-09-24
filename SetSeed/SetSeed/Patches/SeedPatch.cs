@@ -18,6 +18,8 @@ internal class SeedPatch
     {
         if (Data.session_seed != 0 && SNet.IsMaster)
             expPackage.sessionSeed = Data.session_seed;
+        if (SNet.IsMaster)
+            Data.last_act_exp_data = expPackage;
 
         Plugin.L.LogMessage($"Current Seeds ->> Session: {expPackage.sessionSeed} --- Build: {expTierData.Seeds.BuildSeed}");
     }
